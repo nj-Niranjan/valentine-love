@@ -83,39 +83,78 @@ img{
 
 </div>
 
+
 <script>
-const PASSWORD = "love123"; // CHANGE THIS
+// ================= PASSWORD =================
+const PASSWORD = "nj&komal"; // change this
 
 function unlock(){
   if(document.getElementById("pass").value === PASSWORD){
     document.getElementById("lock").style.display="none";
     document.getElementById("content").classList.remove("hidden");
     document.getElementById("music").play();
+    showMessages();
   } else {
     alert("Wrong password 💔");
   }
 }
 
-const surprises = [
-"🌹 Day 1: I promise to love you more every day.",
-"💌 Day 2: You are my safest place.",
-"🎁 Day 3: My heart belongs only to you.",
-"💖 Day 4: I choose you, always.",
-"🌈 Day 5: My happiness starts with you.",
-"💍 Day 6: You are my forever.",
-"🥰 Day 7: Loving you is effortless.",
-"🌹 Day 8: You complete me.",
-"💌 Day 9: I’m grateful for you.",
-"🎁 Day 10: You are my miracle.",
-"💖 Day 11: My world is better with you.",
-"🌈 Day 12: You are my dream come true.",
-"💍 Day 13: I’ll never stop loving you.",
-"❤️ Day 14: Happy Valentine’s Day My Love!"
+// ================= DATE & TIME =================
+const now = new Date();
+const hour = now.getHours();
+const month = now.getMonth() + 1;
+const date = now.getDate();
+
+// ================= HER BIRTHDAY =================
+// CHANGE THIS 👇
+const birthday = { month: 2, day: 24 }; 
+
+// ================= NIGHT MESSAGE =================
+const nightMessage = "🌙 Good night my love. Even the stars envy my love for you 💖";
+
+// ================= DAILY MESSAGE =================
+const dailyMessages = [
+  "💖 You are my peace.",
+  "🌸 Your smile heals me.",
+  "💌 I am grateful for you.",
+  "🌈 My happiness starts with you.",
+  "🥰 I choose you every day."
 ];
 
-const day = new Date().getDate();
-document.getElementById("surprise").innerText =
-surprises[day % 14];
+// ================= VALENTINE WEEK 2026 =================
+const valentineWeek = {
+  "2-7": "🌹 Rose Day: Every rose reminds me of you.",
+  "2-8": "💍 Propose Day: Will you be mine forever?",
+  "2-9": "🍫 Chocolate Day: Life is sweeter with you.",
+  "2-10": "🧸 Teddy Day: You are my comfort.",
+  "2-11": "🤝 Promise Day: I promise to love you endlessly.",
+  "2-12": "🤗 Hug Day: Sending you my warmest hug.",
+  "2-13": "💋 Kiss Day: A kiss to seal my love.",
+  "2-14": "❤️ Valentine’s Day: You are my forever."
+};
+
+function showMessages(){
+  let msg = "";
+
+  // 🎂 Birthday
+  if(month === birthday.month && date === birthday.day){
+    msg = "🎂 Happy Birthday My Love! You are my greatest blessing 💖";
+  }
+  // 🌹 Valentine Week
+  else if(valentineWeek[`${month}-${date}`]){
+    msg = valentineWeek[`${month}-${date}`];
+  }
+  // 🌙 Night Message
+  else if(hour >= 23){
+    msg = nightMessage;
+  }
+  // 💬 Message of the Day
+  else {
+    msg = dailyMessages[date % dailyMessages.length];
+  }
+
+  document.getElementById("surprise").innerText = msg;
+}
 </script>
 
 </body>
