@@ -86,76 +86,85 @@ img{
 
 <script>
 // ================= PASSWORD =================
-const PASSWORD = "nj&komal"; // change this
+const PASSWORD = "nj&komal"; // keep or change
 
 function unlock(){
   if(document.getElementById("pass").value === PASSWORD){
-    document.getElementById("lock").style.display="none";
+    document.getElementById("lock").style.display = "none";
     document.getElementById("content").classList.remove("hidden");
     document.getElementById("music").play();
-    showMessages();
+    showMessage();
   } else {
     alert("Wrong password 💔");
   }
 }
 
-// ================= DATE & TIME =================
+// ================= CURRENT DATE & TIME =================
 const now = new Date();
-const hour = now.getHours();
-const month = now.getMonth() + 1;
-const date = now.getDate();
+const year = now.getFullYear();        // YYYY
+const month = now.getMonth() + 1;      // 1–12
+const day = now.getDate();             // 1–31
+const hour = now.getHours();           // 0–23
 
 // ================= HER BIRTHDAY =================
-// CHANGE THIS 👇
-const birthday = { month: 2, day: 24 }; 
+const birthday = { month: 2, day: 24 }; // Feb 24
 
 // ================= NIGHT MESSAGE =================
-const nightMessage = "🌙 Good night my love. Even the stars envy my love for you 💖";
+const nightMessage =
+"🌙 Good night my love. Even the stars envy my love for you 💖";
 
-// ================= DAILY MESSAGE =================
+// ================= MESSAGE OF THE DAY =================
 const dailyMessages = [
   "💖 You are my peace.",
   "🌸 Your smile heals me.",
   "💌 I am grateful for you.",
   "🌈 My happiness starts with you.",
-  "🥰 I choose you every day."
+  "🥰 I choose you every single day."
 ];
 
-// ================= VALENTINE WEEK 2026 =================
-const valentineWeek = {
-  "2-7": "🌹 Rose Day: Every rose reminds me of you.",
-  "2-8": "💍 Propose Day: Will you be mine forever?",
-  "2-9": "🍫 Chocolate Day: Life is sweeter with you.",
-  "2-10": "🧸 Teddy Day: You are my comfort.",
-  "2-11": "🤝 Promise Day: I promise to love you endlessly.",
-  "2-12": "🤗 Hug Day: Sending you my warmest hug.",
-  "2-13": "💋 Kiss Day: A kiss to seal my love.",
-  "2-14": "❤️ Valentine’s Day: You are my forever."
+// ================= VALENTINE WEEK 2026 (FIXED) =================
+const valentine2026 = {
+  "2026-02-07": "🌹 Rose Day: Every rose reminds me of you.",
+  "2026-02-08": "💍 Propose Day: Will you be mine forever?",
+  "2026-02-09": "🍫 Chocolate Day: Life is sweeter with you.",
+  "2026-02-10": "🧸 Teddy Day: You are my comfort.",
+  "2026-02-11": "🤝 Promise Day: I promise to love you endlessly.",
+  "2026-02-12": "🤗 Hug Day: Sending you my warmest hug.",
+  "2026-02-13": "💋 Kiss Day: A kiss to seal my love.",
+  "2026-02-14": "❤️ Valentine’s Day: You are my forever."
 };
 
-function showMessages(){
-  let msg = "";
+// ================= FINAL MESSAGE LOGIC =================
+function showMessage(){
 
-  // 🎂 Birthday
-  if(month === birthday.month && date === birthday.day){
-    msg = "🎂 Happy Birthday My Love! You are my greatest blessing 💖";
+  const todayKey =
+    year + "-" +
+    String(month).padStart(2, "0") + "-" +
+    String(day).padStart(2, "0");
+
+  let message = "";
+
+  // 🎂 Birthday (TOP PRIORITY)
+  if (month === birthday.month && day === birthday.day) {
+    message = "🎂 Happy Birthday My Love! You are my greatest blessing 💖";
   }
-  // 🌹 Valentine Week
-  else if(valentineWeek[`${month}-${date}`]){
-    msg = valentineWeek[`${month}-${date}`];
+  // ❤️ Valentine Week (ONLY 2026)
+  else if (valentine2026[todayKey]) {
+    message = valentine2026[todayKey];
   }
-  // 🌙 Night Message
-  else if(hour >= 23){
-    msg = nightMessage;
+  // 🌙 Night Message (after 9 PM)
+  else if (hour >= 21) {
+    message = nightMessage;
   }
-  // 💬 Message of the Day
+  // 💬 Normal Daily Message
   else {
-    msg = dailyMessages[date % dailyMessages.length];
+    message = dailyMessages[day % dailyMessages.length];
   }
 
-  document.getElementById("surprise").innerText = msg;
+  document.getElementById("surprise").innerText = message;
 }
 </script>
+
 
 </body>
 </html>
