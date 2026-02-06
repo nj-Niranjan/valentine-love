@@ -1,78 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title><h1>My Queen ❤️</h1>
-</title>
+<meta charset="UTF-8">
+<title>For My Wife ❤️</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+<style>
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+  text-align:center;
+}
 
-    .card {
-      background: white;
-      padding: 30px;
-      border-radius: 20px;
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
+.hidden{display:none;}
 
-    h1 {
-      color: #d63384;
-    }
+.card{
+  background:white;
+  margin:20px auto;
+  padding:25px;
+  border-radius:20px;
+  max-width:420px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
 
-    p {
-      font-size: 18px;
-      color: #444;
-    }
+button{
+  background:#d63384;
+  color:white;
+  border:none;
+  padding:10px 20px;
+  border-radius:20px;
+  font-size:16px;
+  cursor:pointer;
+}
 
-    .heart {
-      font-size: 40px;
-      animation: beat 1s infinite;
-    }
-
-    @keyframes beat {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); }
-    }
-  </style>
+img{
+  width:100%;
+  border-radius:15px;
+  margin-top:10px;
+}
+</style>
 </head>
 
 <body>
 
+<!-- PASSWORD SCREEN -->
+<div id="lock" class="card">
+  <h2>🔐 Enter Our Secret</h2>
+  <input type="password" id="pass" placeholder="Password">
+  <br><br>
+  <button onclick="unlock()">Open My Heart ❤️</button>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="content" class="hidden">
+
+  <audio id="music" src="music.mp3" loop></audio>
+
   <div class="card">
-    <div class="heart">❤️</div>
-    <h1>My Love</h1>
-    <h2>Today's Surprise 💝</h2>
-    <p id="message"></p>
+    <h1>💖 My Queen ❤️</h1>
+    <h3>14-Day Valentine Surprise 💝</h3>
+    <p id="surprise"></p>
   </div>
 
-  <script>
-    const messages = [
-      "🌹 You are the most beautiful part of my life.",
-      "💌 I fall in love with you again every single day.",
-      "🎁 Today’s gift: My heart, always yours.",
-      "💖 I promise to stand by you forever.",
-      "🌈 My favorite place is next to you.",
-      "💍 I choose you. Today. Tomorrow. Always.",
-      "🥰 Loving you is my greatest happiness."
-    ];
+  <div class="card">
+    <h2>💌 My Love Letter</h2>
+    <p>
+      My love,<br><br>
+      You are my today, my tomorrow, and my forever.
+      Every heartbeat of mine whispers your name.
+      Thank you for choosing me, loving me, and standing with me.
+      <br><br>
+      Forever yours ❤️
+    </p>
+  </div>
 
-    const today = new Date().getDate();
-    const message = messages[today % messages.length];
+  <div class="card">
+    <h2>📸 Our Memories</h2>
+    <img src="photos/photo1.jpg">
+    <img src="photos/photo2.jpg">
+    <img src="photos/photo3.jpg">
+  </div>
 
-    document.getElementById("message").innerText = message;
-  </script>
+</div>
+
+<script>
+const PASSWORD = "love123"; // CHANGE THIS
+
+function unlock(){
+  if(document.getElementById("pass").value === PASSWORD){
+    document.getElementById("lock").style.display="none";
+    document.getElementById("content").classList.remove("hidden");
+    document.getElementById("music").play();
+  } else {
+    alert("Wrong password 💔");
+  }
+}
+
+const surprises = [
+"🌹 Day 1: I promise to love you more every day.",
+"💌 Day 2: You are my safest place.",
+"🎁 Day 3: My heart belongs only to you.",
+"💖 Day 4: I choose you, always.",
+"🌈 Day 5: My happiness starts with you.",
+"💍 Day 6: You are my forever.",
+"🥰 Day 7: Loving you is effortless.",
+"🌹 Day 8: You complete me.",
+"💌 Day 9: I’m grateful for you.",
+"🎁 Day 10: You are my miracle.",
+"💖 Day 11: My world is better with you.",
+"🌈 Day 12: You are my dream come true.",
+"💍 Day 13: I’ll never stop loving you.",
+"❤️ Day 14: Happy Valentine’s Day My Love!"
+];
+
+const day = new Date().getDate();
+document.getElementById("surprise").innerText =
+surprises[day % 14];
+</script>
 
 </body>
 </html>
