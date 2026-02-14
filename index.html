@@ -10,6 +10,7 @@ body{
   font-family:'Segoe UI',sans-serif;
   background:linear-gradient(135deg,#ff9a9e,#fad0c4);
   text-align:center;
+  overflow-x:hidden;
 }
 
 .hidden{display:none;}
@@ -31,6 +32,7 @@ button{
   border-radius:20px;
   font-size:16px;
   cursor:pointer;
+  margin:5px;
 }
 
 img{
@@ -39,6 +41,7 @@ img{
   margin-top:10px;
 }
 
+/* hearts */
 #hearts{
   position:fixed;
   top:0;
@@ -57,25 +60,29 @@ img{
 }
 
 @keyframes floatUp{
-  from{
-    transform:translateY(100vh);
-    opacity:1;
-  }
-  to{
-    transform:translateY(-10vh);
-    opacity:0;
-  }
+  from{transform:translateY(100vh);opacity:1;}
+  to{transform:translateY(-10vh);opacity:0;}
 }
 
-
+/* admin */
+.adminPanel{
+  position:fixed;
+  bottom:10px;
+  right:10px;
+  background:white;
+  padding:15px;
+  border-radius:15px;
+  box-shadow:0 0 15px rgba(0,0,0,0.2);
+  z-index:1000;
+}
 </style>
 </head>
 
 <body>
 
-    <div id="hearts"></div>
+<div id="hearts"></div>
 
-<!-- PASSWORD SCREEN -->
+<!-- PASSWORD -->
 <div id="lock" class="card">
   <h2>🔐 Enter Our Secret</h2>
   <input type="password" id="pass" placeholder="Password">
@@ -83,27 +90,22 @@ img{
   <button onclick="unlock()">Open My Heart ❤️</button>
 </div>
 
-<!-- MAIN CONTENT -->
+<!-- MAIN -->
 <div id="content" class="hidden">
 
   <audio id="music" src="music.mp3" loop></audio>
+  <audio id="yesMusic" src="yes.mp3"></audio>
 
   <div class="card">
     <h1>💖 My Queen ❤️</h1>
-    <h3>14-Day Valentine Surprise 💝</h3>
+    <h3>Valentine Surprise 💝</h3>
+    <p id="countdown"></p>
     <p id="surprise"></p>
   </div>
 
   <div class="card">
     <h2>💌 My Love Letter</h2>
-    <p>
-      My love,<br><br>
-      You are my today, my tomorrow, and my forever.
-      Every heartbeat of mine whispers your name.
-      Thank you for choosing me, loving me, and standing with me.
-      <br><br>
-      Forever yours ❤️
-    </p>
+    <p id="loveLetter"></p>
   </div>
 
   <div class="card">
@@ -112,44 +114,57 @@ img{
     <img src="photos/photo2.jpg">
     <img src="photos/photo3.jpg">
   </div>
-   <div class="card">
-  <h2>🕰️ Our Journey</h2>
-  <p>💞 First meeting – The day my life changed</p>
-  <p>😊 First smile – I knew you were special</p>
-  <p>💍 The day you became mine forever</p>
-   </div>
+
+  <div class="card">
+    <h2>🕰️ Our Journey</h2>
+    <p>💞 First meeting – The day my life changed</p>
+    <p>😊 First smile – I knew you were special</p>
+    <p>💍 The day you became mine forever</p>
+  </div>
+
+  <!-- tiny admin button -->
+  <button onclick="openAdmin()" style="opacity:0.2;font-size:10px;">admin</button>
 
 </div>
 
+<!-- SECRET PAGE -->
+<div id="secretPage" class="hidden card">
+  <h2>🔒 Private Message From Husband</h2>
+  <p>
+    No matter what happens in life,  
+    I will stand beside you forever.  
+    I love you beyond everything ❤️
+  </p>
+</div>
 
 <script>
 // ================= PASSWORD =================
-const PASSWORD = "nj&komal";
+const PASSWORD="nj&komal";
+const ADMIN_PASS="king";
 
 function unlock(){
-  if(document.getElementById("pass").value === PASSWORD){
+  if(document.getElementById("pass").value===PASSWORD){
     document.getElementById("lock").style.display="none";
     document.getElementById("content").classList.remove("hidden");
     document.getElementById("music").play();
+    setTimeout(startHearts,500); // glitch fix
     startSystem();
-    startHearts();
-  } else {
-    alert("Wrong password 💔");
-  }
+  } else alert("Wrong password 💔");
 }
 
 // ================= DATE =================
-const now = new Date();
-const year = now.getFullYear();
-const month = now.getMonth()+1;
-const day = now.getDate();
-const hour = now.getHours();
+const now=new Date();
+const year=now.getFullYear();
+const month=now.getMonth()+1;
+const day=now.getDate();
+const hour=now.getHours();
+const key=year+"-"+String(month).padStart(2,"0")+"-"+String(day).padStart(2,"0");
 
 // ================= BIRTHDAY =================
-const birthday = { month:2, day:24 };
+const birthday={month:2,day:24};
 
 // ================= LOVE LETTERS =================
-const loveLetters = [
+const loveLetters=[
 "You are my today and all my tomorrows ❤️",
 "My heart found its forever home in you 💖",
 "Every moment with you is magic ✨",
@@ -158,114 +173,215 @@ const loveLetters = [
 ];
 
 // ================= VALENTINE =================
-const valentine2026 = {
-  "2026-02-07": "🌹 Rose Day: Every rose reminds me of you.",
-  "2026-02-08": "💍 Propose Day",
-  "2026-02-09": "🍫 Chocolate Day: Life is sweeter with you.",
-  "2026-02-10": "🧸 Teddy Day: You are my comfort.",
-  "2026-02-11": "🤝 Promise Day: I promise you forever.",
-  "2026-02-12": "🤗 Hug Day: Come here you.",
-  "2026-02-13": "💋 Kiss Day: A kiss for my queen.",
-  "2026-02-14": "❤️ Valentine’s Day ❤️"
+const valentine2026={
+"2026-02-07":"🌹 Rose Day: Every rose reminds me of you.",
+"2026-02-08":"💍 Propose Day – Forever?",
+"2026-02-09":"🍫 Chocolate Day: Life is sweeter with you.",
+"2026-02-10":"🧸 Teddy Day: You are my comfort.",
+"2026-02-11":"🤝 Promise Day: I promise you forever.",
+"2026-02-12":"🤗 Hug Day: Come here you.",
+"2026-02-13":"💋 Kiss Day: A kiss for my queen.",
+"2026-02-14":"❤️ Valentine’s Day ❤️"
 };
 
 // ================= HEARTS =================
 function startHearts(){
-  const container = document.getElementById("hearts");
+  const c=document.getElementById("hearts");
   setInterval(()=>{
-    const h = document.createElement("div");
+    const h=document.createElement("div");
     h.className="heart-float";
     h.style.left=Math.random()*100+"%";
     h.innerText="❤️";
-    container.appendChild(h);
+    c.appendChild(h);
     setTimeout(()=>h.remove(),6000);
   },500);
 }
 
-// ================= TYPING EFFECT =================
+// ================= COUNTDOWN =================
+function updateCountdown(){
+  const target=new Date("2026-02-14T00:00:00");
+  const diff=target-new Date();
+  if(diff>0){
+    const d=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("countdown").innerText=
+      `⏳ ${d} days left for Valentine’s Day`;
+  } else document.getElementById("countdown").innerText=
+      "❤️ Happy Valentine’s Day ❤️";
+}
+
+// ================= TYPING =================
 function typeText(text){
-  const el = document.getElementById("loveLetter");
+  const el=document.getElementById("loveLetter");
   el.innerText="";
   let i=0;
-  const interval=setInterval(()=>{
-    el.innerText += text[i];
+  const t=setInterval(()=>{
+    el.innerText+=text[i];
     i++;
-    if(i>=text.length) clearInterval(interval);
+    if(i>=text.length) clearInterval(t);
   },40);
 }
 
 // ================= PROPOSAL =================
+let yesSize=16;
+
+function accepted(){
+  return localStorage.getItem("sheSaidYes")==="true";
+}
+
 function showProposal(){
+  if(accepted()) return;
+
+  const old=document.getElementById("proposalBox");
+  if(old) old.remove();
+
   const box=document.createElement("div");
+  box.id="proposalBox";
   box.className="card";
   box.innerHTML=`
     <h2>💍 Will You Stay With Me Forever?</h2>
-    <button onclick="yesLove()">YES ❤️</button>
+    <button id="yesBtn" onclick="yesLove()">YES ❤️</button>
     <button onclick="noLove()">NO 🙈</button>
   `;
   document.getElementById("content").prepend(box);
 }
 
 function yesLove(){
-  alert("Yayyyyy ❤️ I love you endlessly!");
+  localStorage.setItem("sheSaidYes","true");
+  document.getElementById("music").pause();
+  document.getElementById("yesMusic").play();
+  confetti();
+  shake();
+  selfie();
+  banner();
+
+  const box=document.getElementById("proposalBox");
+  box.innerHTML=`<h2>💖 She Said YES 💖</h2><p>Forever starts now 🥰</p>`;
 }
 
 function noLove(){
-  alert("Hehe 😄 I know your answer is YES!");
+  yesSize+=10;
+  document.getElementById("yesBtn").style.fontSize=yesSize+"px";
+}
+
+// ================= EFFECTS =================
+function confetti(){
+  for(let i=0;i<40;i++){
+    const c=document.createElement("div");
+    c.innerText="🎉";
+    c.style.position="fixed";
+    c.style.left=Math.random()*100+"%";
+    c.style.top=Math.random()*100+"%";
+    c.style.fontSize="25px";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),1500);
+  }
+}
+
+function shake(){
+  let n=0;
+  const s=setInterval(()=>{
+    document.body.style.transform=
+      `translate(${Math.random()*10-5}px,${Math.random()*10-5}px)`;
+    if(++n>15){
+      clearInterval(s);
+      document.body.style.transform="translate(0,0)";
+    }
+  },50);
+}
+
+function selfie(){
+  const f=document.createElement("div");
+  f.style.position="fixed";
+  f.style.top="10px";
+  f.style.left="10px";
+  f.style.right="10px";
+  f.style.bottom="10px";
+  f.style.border="5px solid white";
+  f.style.borderRadius="20px";
+  f.style.pointerEvents="none";
+  f.style.boxShadow="0 0 30px pink";
+  document.body.appendChild(f);
+}
+
+function banner(){
+  const b=document.createElement("div");
+  b.innerText="❤️ She Said YES ❤️";
+  b.style.position="fixed";
+  b.style.top="0";
+  b.style.left="0";
+  b.style.right="0";
+  b.style.background="#d63384";
+  b.style.color="white";
+  b.style.padding="15px";
+  b.style.fontSize="20px";
+  b.style.zIndex="999";
+  document.body.appendChild(b);
 }
 
 // ================= FIREWORKS =================
-function startFireworks(){
-  const duration=5000;
-  const end=Date.now()+duration;
+function fireworks(){
+  const end=Date.now()+6000;
+  (function f(){
+    const e=document.createElement("div");
+    e.innerText="";
+    e.style.position="fixed";
+    e.style.left=Math.random()*100+"%";
+    e.style.top=Math.random()*60+"%";
+    e.style.fontSize="30px";
+    document.body.appendChild(e);
+    setTimeout(()=>e.remove(),1000);
+    if(Date.now()<end) requestAnimationFrame(f);
+  })();
+}
 
-  (function frame(){
-    const colors=['#ff4d6d','#ffd166','#06d6a0','#118ab2'];
-    const heart=document.createElement("div");
-    heart.style.position="fixed";
-    heart.style.left=Math.random()*100+"%";
-    heart.style.top=Math.random()*50+"%";
-    heart.style.fontSize="30px";
-    heart.innerText="🎆";
-    document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),1000);
-    if(Date.now()<end) requestAnimationFrame(frame);
-  }());
+// ================= ADMIN =================
+function openAdmin(){
+  const p=prompt("Admin password?");
+  if(p!==ADMIN_PASS) return alert("Wrong");
+
+  const panel=document.createElement("div");
+  panel.className="adminPanel";
+  panel.innerHTML=`
+    <h4>Admin</h4>
+    <button onclick="resetYes()">Reset YES</button>
+    <button onclick="showSecret()">Open Secret</button>
+    <button onclick="this.parentElement.remove()">Close</button>
+  `;
+  document.body.appendChild(panel);
+}
+
+function resetYes(){
+  localStorage.removeItem("sheSaidYes");
+  alert("Proposal unlocked again 💍");
+}
+
+function showSecret(){
+  document.getElementById("secretPage").classList.remove("hidden");
+  window.scrollTo(0,document.body.scrollHeight);
 }
 
 // ================= MAIN =================
 function startSystem(){
-
-  const key =
-    year+"-"+String(month).padStart(2,"0")+"-"+String(day).padStart(2,"0");
+  updateCountdown();
 
   let msg="";
-
-  if(month===birthday.month && day===birthday.day){
+  if(month===birthday.month && day===birthday.day)
     msg="🎂 Happy Birthday My Love ❤️";
-  }
-  else if(key==="2026-02-08"){
-    msg="💍 Propose Day";
-    showProposal();
-  }
-  else if(valentine2026[key]){
+  else if(valentine2026[key])
     msg=valentine2026[key];
-  }
-  else if(hour>=21){
+  else if(hour>=21)
     msg="🌙 I love you beyond the stars ❤️";
-  }
-  else{
-    msg="💖 Thinking about you always.";
-  }
+  else
+    msg="💖 Thinking about you every moment.";
 
   document.getElementById("surprise").innerText=msg;
 
-  // Love letter typing
+  showProposal();
   typeText(loveLetters[day % loveLetters.length]);
 
-  // Fireworks on Feb 14
-  if(key==="2026-02-14"){
-    startFireworks();
-  }
+  if(key==="2026-02-14") fireworks();
 }
 </script>
+
+</body>
+</html>
