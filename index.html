@@ -38,10 +38,42 @@ img{
   border-radius:15px;
   margin-top:10px;
 }
+
+#hearts{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.heart-float{
+  position:absolute;
+  color:#ff4d6d;
+  animation: floatUp 6s linear infinite;
+  font-size:20px;
+}
+
+@keyframes floatUp{
+  from{
+    transform:translateY(100vh);
+    opacity:1;
+  }
+  to{
+    transform:translateY(-10vh);
+    opacity:0;
+  }
+}
+
+
 </style>
 </head>
 
 <body>
+
+    <div id="hearts"></div>
 
 <!-- PASSWORD SCREEN -->
 <div id="lock" class="card">
@@ -80,91 +112,160 @@ img{
     <img src="photos/photo2.jpg">
     <img src="photos/photo3.jpg">
   </div>
+   <div class="card">
+  <h2>🕰️ Our Journey</h2>
+  <p>💞 First meeting – The day my life changed</p>
+  <p>😊 First smile – I knew you were special</p>
+  <p>💍 The day you became mine forever</p>
+   </div>
 
 </div>
 
 
 <script>
 // ================= PASSWORD =================
-const PASSWORD = "nj&komal"; // keep or change
+const PASSWORD = "nj&komal";
 
 function unlock(){
   if(document.getElementById("pass").value === PASSWORD){
-    document.getElementById("lock").style.display = "none";
+    document.getElementById("lock").style.display="none";
     document.getElementById("content").classList.remove("hidden");
     document.getElementById("music").play();
-    showMessage();
+    startSystem();
+    startHearts();
   } else {
     alert("Wrong password 💔");
   }
 }
 
-// ================= CURRENT DATE & TIME =================
+// ================= DATE =================
 const now = new Date();
-const year = now.getFullYear();        // YYYY
-const month = now.getMonth() + 1;      // 1–12
-const day = now.getDate();             // 1–31
-const hour = now.getHours();           // 0–23
+const year = now.getFullYear();
+const month = now.getMonth()+1;
+const day = now.getDate();
+const hour = now.getHours();
 
-// ================= HER BIRTHDAY =================
-const birthday = { month: 2, day: 24 }; // Feb 24
+// ================= BIRTHDAY =================
+const birthday = { month:2, day:24 };
 
-// ================= NIGHT MESSAGE =================
-const nightMessage =
-"🌙 Good night my love. Even the stars envy my love for you 💖";
-
-// ================= MESSAGE OF THE DAY =================
-const dailyMessages = [
-  "💖 You are my peace.",
-  "🌸 Your smile heals me.",
-  "💌 I am grateful for you.",
-  "🌈 My happiness starts with you.",
-  "🥰 I choose you every single day."
+// ================= LOVE LETTERS =================
+const loveLetters = [
+"You are my today and all my tomorrows ❤️",
+"My heart found its forever home in you 💖",
+"Every moment with you is magic ✨",
+"I still fall for you every day 💍",
+"You are my best decision 🥰"
 ];
 
-// ================= VALENTINE WEEK 2026 (FIXED) =================
+// ================= VALENTINE =================
 const valentine2026 = {
   "2026-02-07": "🌹 Rose Day: Every rose reminds me of you.",
-  "2026-02-08": "💍 Propose Day: Will you be mine forever?",
+  "2026-02-08": "💍 Propose Day",
   "2026-02-09": "🍫 Chocolate Day: Life is sweeter with you.",
   "2026-02-10": "🧸 Teddy Day: You are my comfort.",
-  "2026-02-11": "🤝 Promise Day: I promise to love you endlessly.",
-  "2026-02-12": "🤗 Hug Day: Sending you my warmest hug.",
-  "2026-02-13": "💋 Kiss Day: A kiss to seal my love.",
-  "2026-02-14": "❤️ Valentine’s Day: You are my forever."
+  "2026-02-11": "🤝 Promise Day: I promise you forever.",
+  "2026-02-12": "🤗 Hug Day: Come here you.",
+  "2026-02-13": "💋 Kiss Day: A kiss for my queen.",
+  "2026-02-14": "❤️ Valentine’s Day ❤️"
 };
 
-// ================= FINAL MESSAGE LOGIC =================
-function showMessage(){
+// ================= HEARTS =================
+function startHearts(){
+  const container = document.getElementById("hearts");
+  setInterval(()=>{
+    const h = document.createElement("div");
+    h.className="heart-float";
+    h.style.left=Math.random()*100+"%";
+    h.innerText="❤️";
+    container.appendChild(h);
+    setTimeout(()=>h.remove(),6000);
+  },500);
+}
 
-  const todayKey =
-    year + "-" +
-    String(month).padStart(2, "0") + "-" +
-    String(day).padStart(2, "0");
+// ================= TYPING EFFECT =================
+function typeText(text){
+  const el = document.getElementById("loveLetter");
+  el.innerText="";
+  let i=0;
+  const interval=setInterval(()=>{
+    el.innerText += text[i];
+    i++;
+    if(i>=text.length) clearInterval(interval);
+  },40);
+}
 
-  let message = "";
+// ================= PROPOSAL =================
+function showProposal(){
+  const box=document.createElement("div");
+  box.className="card";
+  box.innerHTML=`
+    <h2>💍 Will You Stay With Me Forever?</h2>
+    <button onclick="yesLove()">YES ❤️</button>
+    <button onclick="noLove()">NO 🙈</button>
+  `;
+  document.getElementById("content").prepend(box);
+}
 
-  // 🎂 Birthday (TOP PRIORITY)
-  if (month === birthday.month && day === birthday.day) {
-    message = "🎂 Happy Birthday My Love! You are my greatest blessing 💖";
+function yesLove(){
+  alert("Yayyyyy ❤️ I love you endlessly!");
+}
+
+function noLove(){
+  alert("Hehe 😄 I know your answer is YES!");
+}
+
+// ================= FIREWORKS =================
+function startFireworks(){
+  const duration=5000;
+  const end=Date.now()+duration;
+
+  (function frame(){
+    const colors=['#ff4d6d','#ffd166','#06d6a0','#118ab2'];
+    const heart=document.createElement("div");
+    heart.style.position="fixed";
+    heart.style.left=Math.random()*100+"%";
+    heart.style.top=Math.random()*50+"%";
+    heart.style.fontSize="30px";
+    heart.innerText="🎆";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),1000);
+    if(Date.now()<end) requestAnimationFrame(frame);
+  }());
+}
+
+// ================= MAIN =================
+function startSystem(){
+
+  const key =
+    year+"-"+String(month).padStart(2,"0")+"-"+String(day).padStart(2,"0");
+
+  let msg="";
+
+  if(month===birthday.month && day===birthday.day){
+    msg="🎂 Happy Birthday My Love ❤️";
   }
-  // ❤️ Valentine Week (ONLY 2026)
-  else if (valentine2026[todayKey]) {
-    message = valentine2026[todayKey];
+  else if(key==="2026-02-08"){
+    msg="💍 Propose Day";
+    showProposal();
   }
-  // 🌙 Night Message (after 9 PM)
-  else if (hour >= 23) {
-    message = nightMessage;
+  else if(valentine2026[key]){
+    msg=valentine2026[key];
   }
-  // 💬 Normal Daily Message
-  else {
-    message = dailyMessages[day % dailyMessages.length];
+  else if(hour>=21){
+    msg="🌙 I love you beyond the stars ❤️";
+  }
+  else{
+    msg="💖 Thinking about you always.";
   }
 
-  document.getElementById("surprise").innerText = message;
+  document.getElementById("surprise").innerText=msg;
+
+  // Love letter typing
+  typeText(loveLetters[day % loveLetters.length]);
+
+  // Fireworks on Feb 14
+  if(key==="2026-02-14"){
+    startFireworks();
+  }
 }
 </script>
-
-
-</body>
-</html>
